@@ -15,7 +15,7 @@ if 0:
 	Y_G_OFFSET = 0
 	Z_G_OFFSET = 0
 else:
-	#IMU2 accel. calibration (TODO)
+	#IMU2 accel. calibration
 	X_A_OFFSET = 0.465351637
 	Y_A_OFFSET = 0.141331404
 	Z_A_OFFSET = -0.194544327
@@ -29,7 +29,7 @@ imu = adafruit_mpu6050.MPU6050(i2c)	#initialize the mpu object
 
 while True:
 	#calibration was done by printing in comma delineation, finding average offest in Excel
-	print(imu.acceleration[0]-X_A_OFFSET,",",imu.acceleration[1]-Y_A_OFFSET,",",imu.acceleration[2]-Z_A_OFFSET)
-	#print("%.5f,%.5f,%.5f" % (imu.gyro))	#test gyroscope
+	#print(imu.acceleration[0]-X_A_OFFSET,",",imu.acceleration[1]-Y_A_OFFSET,",",imu.acceleration[2]-Z_A_OFFSET)
+	print(imu.gyro[0]-X_G_OFFSET,",",imu.gyro[1]-Y_G_OFFSET,",",imu.gyro[2]-Z_G_OFFSET)
 	#print("Temperature: %.2f C" % mpu.temperature)	#test temperature
 	time.sleep(0.01)	#print every 10ms
