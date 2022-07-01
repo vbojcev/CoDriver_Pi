@@ -11,9 +11,9 @@ if 1:
 	Y_A_OFFSET = 0.287291
 	Z_A_OFFSET = -1.59902
 	#IMU1 gyro calibration(TODO)
-	X_G_OFFSET = 0
-	Y_G_OFFSET = 0
-	Z_G_OFFSET = 0
+	X_G_OFFSET = -0.046219629
+	Y_G_OFFSET = -0.036682867
+	Z_G_OFFSET = 0.016032524
 else:
 	#IMU2 accel. calibration
 	X_A_OFFSET = 0.465351637
