@@ -5,7 +5,7 @@ import adafruit_mpu6050
 
 #calculate offsets for IMU1, for calibration
 
-if 0:
+if 1:
 	#IMU1 accel. calibration
 	X_A_OFFSET = 0.514183
 	Y_A_OFFSET = 0.287291
