@@ -20,9 +20,9 @@ else:
 	Y_A_OFFSET = 0.141331404
 	Z_A_OFFSET = -0.194544327
 	#IMU2 gyro calibration (TODO)
-	X_G_OFFSET = 0
-	Y_G_OFFSET = 0
-	Z_G_OFFSET = 0
+	X_G_OFFSET = -0.028397785
+	Y_G_OFFSET = -0.020749489
+	Z_G_OFFSET = -0.014382219
 
 i2c = board.I2C()	#initialize the i2c interface
 imu = adafruit_mpu6050.MPU6050(i2c)	#initialize the mpu object
