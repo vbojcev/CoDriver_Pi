@@ -5,7 +5,7 @@ import adafruit_mpu6050
 
 #calculate offsets for IMU1, for calibration
 
-if 1:
+if 0:
 	#IMU1 accel. calibration
 	X_A_OFFSET = 0.514183
 	Y_A_OFFSET = 0.287291
@@ -16,9 +16,9 @@ if 1:
 	Z_G_OFFSET = 0
 else:
 	#IMU2 accel. calibration (TODO)
-	X_A_OFFSET = 0
-	Y_A_OFFSET = 0
-	Z_A_OFFSET = 0
+	X_A_OFFSET = 0.465351637
+	Y_A_OFFSET = 0.141331404
+	Z_A_OFFSET = -0.194544327
 	#IMU2 gyro calibration (TODO)
 	X_G_OFFSET = 0
 	Y_G_OFFSET = 0
