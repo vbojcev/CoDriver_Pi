@@ -19,9 +19,11 @@ imu = adafruit_mpu6050.MPU6050(i2c)	#initialize the mpu object
 
 for i in range(10000):  #100 seconds calibration run.
 
-    x_a_offset = x_a_offset + ((i*x_a_offset)-imu.acceleration[0])/(i+1) # Coninually-updated average formula
-    y_a_offset = y_a_offset + ((i*y_a_offset)-imu.acceleration[1])/(i+1)
-    z_a_offset = z_a_offset + ((i*z_a_offset)-imu.acceleration[2])/(i+1)
+    a_x,a_y,a_z=imu.acceleration
+
+    x_a_offset = x_a_offset + ((i*x_a_offset)-a_x)/(i+1) # Coninually-updated average formula
+    y_a_offset = y_a_offset + ((i*y_a_offset)-a_y)/(i+1)
+    z_a_offset = z_a_offset + ((i*z_a_offset)-a_z)/(i+1)
 
 	#print(imu.acceleration[0],",",imu.acceleration[1],",",imu.acceleration[2])
 	#print(imu.gyro[0],",",imu.gyro[1],",",imu.gyro[2])
