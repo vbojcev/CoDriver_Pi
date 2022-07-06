@@ -10,5 +10,6 @@ After installing Docker on the pi, the code can be run as follows
 ### gps.dockerfile
 
 ```
+cd ./component_tests/dockerfiles
 docker build -f gps.dockerfile -t gps:test ../
 ```
