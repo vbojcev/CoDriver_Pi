@@ -3,7 +3,7 @@ import board
 import adafruit_mpu6050
 import csv
 
-#7/4/2022: CREATED; NOT YET VERIFIED.
+#7/4/2022: NOT YET TESTED
 
 #calculate offsets for IMU1, for calibration
 #NOTE: Assumes z axis is perfectly vertical and subtracts the acceleration due to gravity, g=9.80665 m/s^2
