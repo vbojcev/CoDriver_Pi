@@ -13,3 +13,5 @@ https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuit
 4. sudo pip3 install adafruit-circuitpython-mpu6050     #IMU and SWS access
 5. sudo pip3 install adafruit-circuitpython-gps         #GPS access
 6. sudo pip3 install adafruit-circuitpython-mcp3xxx     #ADC access for TPS,BPS,HRS
+7. sudo apt-get install bluetooth bluez-utils blueman   #Bluetooth utilities
+8. sudo pip3 install obd
