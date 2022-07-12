@@ -18,6 +18,8 @@ i2c = board.I2C()	#initialize the i2c interface
 imu = adafruit_mpu6050.MPU6050(i2c, 0x68)	#initialize the mpu object
 sws = adafruit_mpu6050.MPU6050(i2c, 0x69)	#initialize the mpu object
 
+print("Starting IMU Calibration...")
+
 for i in range(12000):  #2-minute calibration run.
 
     a_x,a_y,a_z=imu.acceleration
@@ -35,6 +37,9 @@ print("IMU accel. offset values:\tX=",x_a_offset,"\tY=",y_a_offset,"\tZ=",z_a_of
 x_a_offset = 0
 y_a_offset = 0
 z_a_offset = 0
+
+time.sleep(1)
+print("Starting SWS Calibration")
 
 for i in range(12000):  #2-minute calibration run.
 
