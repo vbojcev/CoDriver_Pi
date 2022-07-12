@@ -15,12 +15,13 @@ mcp = MCP.MCP3008(spi, cs)
 
 #Initialize each sensor as a channel in the ADC:
 hrs = AnalogIn(mcp, MCP.P0)
-tps = AnalogIn(mcp, MCP.P1)
-bps = AnalogIn(mcp, MCP.P2)
+#tps = AnalogIn(mcp, MCP.P1)
+#bps = AnalogIn(mcp, MCP.P2)
 
 while True:
-    print("HRS:\t",hrs.value,"\tTPS:\t",tps.value,"\tBPS:\t",bps.value)
-    time.sleep(0.25)
+	#print("HRS:\t",hrs.value,"\tTPS:\t",tps.value,"\tBPS:\t",bps.value)
+	print(hrs.value)
+	time.sleep(0.01)
 
 
 
