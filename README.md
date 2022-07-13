@@ -14,4 +14,10 @@ https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuit
 5. sudo pip3 install adafruit-circuitpython-gps         #GPS access
 6. sudo pip3 install adafruit-circuitpython-mcp3xxx     #ADC access for TPS,BPS,HRS
 7. sudo apt-get install bluetooth bluez blueman   #Bluetooth utilities
-8. sudo pip3 install obd
+8. sudo bluetoothctl    #open bluetooth manager
+9. agent on
+10. discoverable on
+11. scan on             
+12. trust "device MAC address" #only once the desired deice shows up on the scan
+13. pair "device MAC address"
+14. sudo pip3 install obd
