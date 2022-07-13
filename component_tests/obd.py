@@ -16,5 +16,7 @@ while True:
     fuel_rate = carPort.query(fuelCMD).value.magnitude      #in l/h
     engineRPM = carPort.query(rpmCMD).value.magnitude       #in RPM
     accelPedal = carPort.query(throttleCMD).value.magnitude #in %
-    print("Speed:\t",speed,"\tFuel:\t",fuel_rate,"\tRPM:\t",engineRPM,"Throttle:\t",accelPedal)
-    time.sleep(0.2)
+    #print("Speed:\t",speed,"\tFuel:\t",fuel_rate,"\tRPM:\t",engineRPM,"Throttle:\t",accelPedal)
+    #time.sleep(0.2)
+    print(time.time(),",",speed,",",fuel_rate,",",engineRPM,",",accelPedal)
+    time.sleep(0.01)
