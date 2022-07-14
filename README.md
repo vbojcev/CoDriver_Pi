@@ -18,6 +18,8 @@ https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuit
 9. agent on
 10. discoverable on
 11. scan on             
-12. trust "device MAC address" #only once the desired deice shows up on the scan
+12. trust "device MAC address (00:1D:A5:01:6E:17 for current adapter)" #only once the desired deice shows up on the scan
 13. pair "device MAC address"
 14. sudo pip3 install obd
+15. sudo nano /etc/rc.local >> add the line "sudo rfcomm bind rfcomm1 00:1D:A5:01:6E:17" #This allows on-demand usage of the OBD2 when in range
+
