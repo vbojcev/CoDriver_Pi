@@ -28,8 +28,6 @@ sws = adafruit_mpu6050.MPU6050(i2c, 0x68)	#initialize the sws object
 
 numSampled = 0
 
-sleepInterval = 0.01
-
 initTime = time.time()
 
 for i in range(10000):
@@ -39,8 +37,7 @@ for i in range(10000):
 	kalmanFilter[1].popleft()
 	kalmanFilter[1].append(accelRaw[1])
 	kalmanFilter[2].popleft()
-	kalmanFilter[2].append(accelRaw[2])"""
-	#accel=(stat.fmean(kalmanFilter[0]),stat.fmean(kalmanFilter[1]),stat.fmean(kalmanFilter[2]),)
-	time.sleep(sleepInterval)
+	kalmanFilter[2].append(accelRaw[2])
+	accel=(stat.fmean(kalmanFilter[0]),stat.fmean(kalmanFilter[1]),stat.fmean(kalmanFilter[2]),)"""
 
 print("Total time elapsed is ",time.time() - initTime,".")
