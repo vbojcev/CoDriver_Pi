@@ -32,7 +32,7 @@ sleepInterval = 0.01
 
 initTime = time.time()
 
-for i in 10000:
+for i in range(10000):
 	accelRaw = np.subtract(sws.acceleration, SWS_ADJ)
 	kalmanFilter[0].popleft()
 	kalmanFilter[0].append(accelRaw[0])
