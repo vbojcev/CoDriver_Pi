@@ -2,29 +2,26 @@ import time
 import board
 import adafruit_mpu6050
 import csv
-
-#7/4/2022: NOT YET TESTED
-
 #calculate offsets for IMU1, for calibration
 #NOTE: Assumes z axis is perfectly vertical and subtracts the acceleration due to gravity, g=9.80665 m/s^2
 
 G = 9.80665 #m/s^2
 
-IMU_x_adj = 0.3992678427551265
-IMU_y_adj = 0.10196126755065921
-IMU_z_adj = -0.23886650688167066
+IMU_x_adj = 0
+IMU_y_adj = 0
+IMU_z_adj = 0
 
-SWS_x_adj = 0.49935046006978273
-SWS_y_adj = 0.22327307146911718
-SWS_z_adj = -1.6066040844471896
+SWS_x_adj = 0
+SWS_y_adj = 0
+SWS_z_adj = 0
 
 x_a_offset = 0
 y_a_offset = 0
 z_a_offset = 0
 
 i2c = board.I2C()	#initialize the i2c interface
-imu = adafruit_mpu6050.MPU6050(i2c, 0x68)	#initialize the mpu object
-sws = adafruit_mpu6050.MPU6050(i2c, 0x69)	#initialize the mpu object
+imu = adafruit_mpu6050.MPU6050(i2c, 0x69)	#initialize the mpu object
+sws = adafruit_mpu6050.MPU6050(i2c, 0x68)	#initialize the mpu object
 
 print("Starting IMU Calibration...")
 
