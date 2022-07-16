@@ -34,13 +34,13 @@ initTime = time.time()
 
 for i in range(10000):
 	accelRaw = np.subtract(sws.acceleration, SWS_ADJ)
-	kalmanFilter[0].popleft()
+	"""kalmanFilter[0].popleft()
 	kalmanFilter[0].append(accelRaw[0])
 	kalmanFilter[1].popleft()
 	kalmanFilter[1].append(accelRaw[1])
 	kalmanFilter[2].popleft()
-	kalmanFilter[2].append(accelRaw[2])
-	accel=(stat.fmean(kalmanFilter[0]),stat.fmean(kalmanFilter[1]),stat.fmean(kalmanFilter[2]),)
+	kalmanFilter[2].append(accelRaw[2])"""
+	#accel=(stat.fmean(kalmanFilter[0]),stat.fmean(kalmanFilter[1]),stat.fmean(kalmanFilter[2]),)
 	time.sleep(sleepInterval)
 
 print("Total time elapsed is ",time.time() - initTime,".")
