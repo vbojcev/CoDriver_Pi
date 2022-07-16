@@ -20,7 +20,8 @@ SWS_z_adj = -0.16447526951499292
 
 SWS_ADJ = (SWS_x_adj,SWS_y_adj,SWS_z_adj)
 
-kalmanFilter = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
+imu_kalmanFilter = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
+sws_kalmanFilter = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
 
 i2c = board.I2C()	#initialize the i2c interface
 imu = adafruit_mpu6050.MPU6050(i2c, 0x69)	#initialize the imu object
@@ -30,14 +31,19 @@ numSampled = 0
 
 initTime = time.time()
 
+def updateFilter(raw, filter):
+	filter[0].popleft()
+	filter[0].append(raw[0])
+	filter[1].popleft()
+	filter[1].append(raw[1])
+	filter[2].popleft()
+	filter[2].append(raw[2])
+
 for i in range(10000):
-	accelRaw = np.subtract(sws.acceleration, SWS_ADJ)
-	kalmanFilter[0].popleft()
-	kalmanFilter[0].append(accelRaw[0])
-	kalmanFilter[1].popleft()
-	kalmanFilter[1].append(accelRaw[1])
-	kalmanFilter[2].popleft()
-	kalmanFilter[2].append(accelRaw[2])
-	accel=(stat.fmean(kalmanFilter[0]),stat.fmean(kalmanFilter[1]),stat.fmean(kalmanFilter[2]),)
+	sws_accelRaw = np.subtract(sws.acceleration, SWS_ADJ)
+	imu_accelRaw = np.subtract(imu.acceleration, IMU_ADJ)
+	updateFilter(sws_accelRaw, sws_kalmanFilter)
+	sws_accel=(stat.fmean(sws_kalmanFilter[0]),stat.fmean(sws_kalmanFilter[1]),stat.fmean(sws_kalmanFilter[2]),)
+	print("%.2f\t%.2f\t%.2f\tm/s^2" % (sws_accel))
 
 print("Total time elapsed is ",time.time() - initTime,".")
