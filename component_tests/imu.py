@@ -2,6 +2,8 @@ import time
 import board
 import adafruit_mpu6050
 import numpy as np
+import statistics as stat
+from collections import deque
 
 
 #calculate offsets for IMU1, for calibration
@@ -18,11 +20,20 @@ SWS_z_adj = -0.16447526951499292
 
 SWS_ADJ = (SWS_x_adj,SWS_y_adj,SWS_z_adj)
 
+kalmanFilter = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
+
 i2c = board.I2C()	#initialize the i2c interface
 imu = adafruit_mpu6050.MPU6050(i2c, 0x69)	#initialize the imu object
 sws = adafruit_mpu6050.MPU6050(i2c, 0x68)	#initialize the sws object
 
 while True:
-	accel = tuple(np.subtract(sws.acceleration, SWS_ADJ))
-	print("X:%.2f,\tY: %.2f,\tZ: %.2f\tm/s^2" % (accel))
+	accelRaw = np.subtract(sws.acceleration, SWS_ADJ)
+	kalmanFilter[0].popleft()
+	kalmanFilter[0].append(accelRaw[0])
+	kalmanFilter[1].popleft()
+	kalmanFilter[1].append(accelRaw[1])
+	kalmanFilter[2].popleft()
+	kalmanFilter[2].append(accelRaw[2])
+	accel=(stat.fmean(kalmanFilter[0]),stat.fmean(kalmanFilter[1]),stat.fmean(kalmanFilter[2]),)
+	print("%.2f\t%.2f\t%.2f\tm/s^2" % (accel))
 	time.sleep(0.01)	#print every 10ms
