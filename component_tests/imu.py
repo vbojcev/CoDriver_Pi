@@ -24,5 +24,5 @@ sws = adafruit_mpu6050.MPU6050(i2c, 0x68)	#initialize the sws object
 
 while True:
 	accel = tuple(np.subtract(sws.acceleration, SWS_ADJ))
-	print("X:%.2f, Y: %.2f, Z: %.2f m/s^2" % (accel))
+	print("X:%.2f,\tY: %.2f,\tZ: %.2f\tm/s^2" % (accel))
 	time.sleep(0.01)	#print every 10ms
