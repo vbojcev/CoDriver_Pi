@@ -7,13 +7,13 @@ import csv
 
 G = 9.80665 #m/s^2
 
-IMU_x_adj = 0
-IMU_y_adj = 0
-IMU_z_adj = 0
+IMU_x_adj = 0.5029609161732991
+IMU_y_adj = 0.22429359992675774
+IMU_z_adj = -1.592849395909651
 
-SWS_x_adj = 0
-SWS_y_adj = 0
-SWS_z_adj = 0
+SWS_x_adj = 0.3495626201558422
+SWS_y_adj = 0.0903922856119797
+SWS_z_adj = -0.16447526951499292
 
 x_a_offset = 0
 y_a_offset = 0
