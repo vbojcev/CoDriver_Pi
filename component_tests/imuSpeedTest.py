@@ -43,16 +43,11 @@ for i in range(10000):
 	sws_accelRaw = np.subtract(sws.acceleration, SWS_ADJ)
 	imu_accelRaw = np.subtract(imu.acceleration, IMU_ADJ)
 
-	#updateFilter(sws_accelRaw, sws_kalmanFilter)
-
-	sws_kalmanFilter[0].popleft()
-	sws_kalmanFilter[0].append(sws_accelRaw[0])
-	sws_kalmanFilter[1].popleft()
-	sws_kalmanFilter[1].append(sws_accelRaw[1])
-	sws_kalmanFilter[2].popleft()
-	sws_kalmanFilter[2].append(sws_accelRaw[2])
+	updateFilter(sws_accelRaw, sws_kalmanFilter)
+	updateFilter(imu_accelRaw, imu_kalmanFilter)
 
 	sws_accel=(stat.fmean(sws_kalmanFilter[0]),stat.fmean(sws_kalmanFilter[1]),stat.fmean(sws_kalmanFilter[2]),)
+	imu_accel=(stat.fmean(imu_kalmanFilter[0]),stat.fmean(imu_kalmanFilter[1]),stat.fmean(imu_kalmanFilter[2]),)
 	#print("%.2f\t%.2f\t%.2f\tm/s^2" % (sws_accel))
 
 print("Total time elapsed is ",time.time() - initTime,".")
