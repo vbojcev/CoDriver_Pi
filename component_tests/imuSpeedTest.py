@@ -1,6 +1,6 @@
 import time
 import board
-import adafruit_mpu6050
+import adafruit_mpu6050 as MPU
 import numpy as np
 import statistics as stat
 from collections import deque
@@ -24,12 +24,12 @@ imu_kalmanFilter = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
 sws_kalmanFilter = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
 
 i2c = board.I2C()	#initialize the i2c interface
-imu = adafruit_mpu6050.MPU6050(i2c, 0x69)	#initialize the imu object
-sws = adafruit_mpu6050.MPU6050(i2c, 0x68)	#initialize the sws object
+imu = MPU.MPU6050(i2c, 0x69)	#initialize the imu object
+sws = MPU.MPU6050(i2c, 0x68)	#initialize the sws object
 
 numSampled = 0
 
-initTime = time.time()
+initTime = time.monotonic()
 
 def updateFilter(raw, filter):
 	filter[0].popleft()
@@ -50,4 +50,4 @@ for i in range(10000):
 	imu_accel=(stat.fmean(imu_kalmanFilter[0]),stat.fmean(imu_kalmanFilter[1]),stat.fmean(imu_kalmanFilter[2]),)
 	#print("%.2f\t%.2f\t%.2f\tm/s^2" % (sws_accel))
 
-print("Total time elapsed is ",time.time() - initTime,".")
+print("Total time elapsed is ",time.monotonic() - initTime,".")
