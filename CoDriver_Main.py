@@ -51,10 +51,19 @@ class DataManager:
         #content=[time,lat,long,speed,fuel_rate,throttle,brake,steer_angle,fw_accel,sw_accel,fw_pitch_wre,sw_pitch_rate,heart_rate]
         #size=13
         self.content=[0,0,0,0,0,0,0,0,0,0,0,0,0]
+        self.numRows = 0
+        self.fileIndex = 0
+        self.currentFile = open('data0.csv', 'w', newline='')
+        self.writer = csv.writer(self.currentFile)
 
-    def record(self):
-        #TODO: Implement printing to csv
-        pass
+    def record(self):   #UNTESTED
+        self.writer.writerow(self.content)
+        self.numRows += 1
+        if (self.numRows > 1000):   #Maximum file size reached
+            self.currentFile.close()
+            self.fileIndex += 1
+            self.currentFile = open('data'+str(self.fileIndex)+'.csv', 'w', newLine='')
+            self.writer = csv.writer(self.currentFile)
 
     def updateTime(self, timeStamp):
         self.content[0] = timeStamp
