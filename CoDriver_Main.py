@@ -182,8 +182,6 @@ if __name__ == '__main__':
 
     #Timing initialization
     initTime = time.monotonic_ns()
-    timer_10ms = timer_500ms = timer_1000ms = 0
-    prevTime = 0
     #=====================================================
 
     #Main Loop
@@ -191,32 +189,18 @@ if __name__ == '__main__':
 
         #Perform as often as possible, no timing specified
         #-------------------------------------------------
-        loopTime = time.monotonic_ns() - prevTime
-        prevTime = time.monotonic_ns()
-        timer_10ms += loopTime
-        timer_500ms += loopTime
-        timer_1000ms += loopTime
-        imu.update()
-        sws.update()
         #-------------------------------------------------
 
         #Perform every 10 milliseconds
         #-------------------------------------------------
-        if (timer_10ms > 10000000):
-            data.record()
-            timer_10ms = 0
         #-------------------------------------------------
 
         #Perform every 500 milliseconds
         #-------------------------------------------------
-        if (timer_500ms > 500000000):
-            timer_500ms = 0
         #-------------------------------------------------
 
         #Perform every 1 second
         #-------------------------------------------------
-        if (timer_1000ms > 1000000000):
-            timer_1000ms = 0
         #-------------------------------------------------
 
         
