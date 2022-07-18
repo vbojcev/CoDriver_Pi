@@ -22,4 +22,7 @@ https://learn.adafruit.com/circuitpython-on-raspberrypi-linux/installing-circuit
 13. pair "device MAC address"
 14. sudo pip3 install obd
 15. sudo nano /etc/rc.local >> add the line "sudo rfcomm bind rfcomm1 00:1D:A5:01:6E:17" #This allows on-demand usage of the OBD2 when in range
+16. sudo pip3 install threading
+17. sudo pip3 install datetime
+18. sudo pip3 install csv
 
