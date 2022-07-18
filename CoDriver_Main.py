@@ -53,7 +53,7 @@ class DataManager:
         self.content=[0,0,0,0,0,0,0,0,0,0,0,0,0]
         self.numRows = 0
         self.fileIndex = 0
-        self.currentFile = open('data0.csv', 'w', newline='')
+        self.currentFile = open('./data/0.csv', 'w', newline='')
         self.writer = csv.writer(self.currentFile)
 
     def record(self):   #UNTESTED
@@ -63,7 +63,7 @@ class DataManager:
         if (self.numRows > 1000):   #Maximum file size reached
             self.currentFile.close()
             self.fileIndex += 1
-            self.currentFile = open('data'+str(self.fileIndex)+'.csv', 'w', newLine='')
+            self.currentFile = open('./data/'+str(self.fileIndex)+'.csv', 'w', newLine='')
             self.writer = csv.writer(self.currentFile)
             self.numRows = 0
 
@@ -107,21 +107,22 @@ class IMU_Manager:
         self.hwInterface = MPU.MPU6050(i2cBus, 0x69)
         #Calibrated offsets for the IMU (x,y,z).
         self.ADJ = (0.5029609161732991,0.22429359992675774,-1.592849395909651)
-        self.kalmanFilter = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
+        self.kalmanFilter_accel = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
         self.accel = (0,0,0)
+        self.pitchRate = (0,0,0)
 
     def update(self):
         accelRaw = np.subtract(self.hwInterface.acceleration, self.ADJ)
-        self.kalmanFilter[0].popleft()
-        self.kalmanFilter[0].append(accelRaw[0])
-        self.kalmanFilter[1].popleft()
-        self.kalmanFilter[1].append(accelRaw[1])
-        self.kalmanFilter[2].popleft()
-        self.kalmanFilter[2].append(accelRaw[2])
-        self.accel = (stat.fmean(self.kalmanFilter[0]),stat.fmean(self.kalmanFilter[1]),stat.fmean(self.kalmanFilter[2]),)
+        self.kalmanFilter_accel[0].popleft()
+        self.kalmanFilter_accel[0].append(accelRaw[0])
+        self.kalmanFilter_accel[1].popleft()
+        self.kalmanFilter_accel[1].append(accelRaw[1])
+        self.kalmanFilter_accel[2].popleft()
+        self.kalmanFilter_accel[2].append(accelRaw[2])
+        self.accel = (stat.fmean(self.kalmanFilter_accel[0]),stat.fmean(self.kalmanFilter_accel[1]),stat.fmean(self.kalmanFilter_accel[2]),)
 
     def read(self):
-        return self.accel
+        return self.accel + self.pitchRate
 
 class SWS_Manager:
 
@@ -130,18 +131,22 @@ class SWS_Manager:
         self.hwInterface = MPU.MPU6050(i2cBus, 0x68)
         #Calibrated offsets for the SWS (x,y,z).
         self.ADJ = (0.3495626201558422,0.0903922856119797,-0.16447526951499292)
-        self.kalmanFilter = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
+        self.kalmanFilter_accel = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
         self.accel = (0,0,0)
+        self.angle = 0
 
     def update(self):
         accelRaw = np.subtract(self.hwInterface.acceleration, self.ADJ)
-        self.kalmanFilter[0].popleft()
-        self.kalmanFilter[0].append(accelRaw[0])
-        self.kalmanFilter[1].popleft()
-        self.kalmanFilter[1].append(accelRaw[1])
-        self.kalmanFilter[2].popleft()
-        self.kalmanFilter[2].append(accelRaw[2])
-        self.accel = (stat.fmean(self.kalmanFilter[0]),stat.fmean(self.kalmanFilter[1]),stat.fmean(self.kalmanFilter[2]),)    
+        self.kalmanFilter_accel[0].popleft()
+        self.kalmanFilter_accel[0].append(accelRaw[0])
+        self.kalmanFilter_accel[1].popleft()
+        self.kalmanFilter_accel[1].append(accelRaw[1])
+        self.kalmanFilter_accel[2].popleft()
+        self.kalmanFilter_accel[2].append(accelRaw[2])
+        self.accel = (stat.fmean(self.kalmanFilter_accel[0]),stat.fmean(self.kalmanFilter_accel[1]),stat.fmean(self.kalmanFilter_accel[2]),)
+
+    def read(self):
+        return self.angle  
 
 class GPS_Manager:
 
@@ -189,18 +194,24 @@ if __name__ == '__main__':
 
         #Perform as often as possible, no timing specified
         #-------------------------------------------------
+            #update IMU, SWS (higher than 10ms update interval is needed due to Kalman filter)
         #-------------------------------------------------
 
         #Perform every 10 milliseconds
         #-------------------------------------------------
+            #read ADC channels: HRS, TPS, BPS
+            #read OBD channels: throttle (overrides TPS f both values reasonable), speed, fuel
+            #record all data to CSV
         #-------------------------------------------------
 
         #Perform every 500 milliseconds
         #-------------------------------------------------
+            #Update GPS
         #-------------------------------------------------
 
-        #Perform every 1 second
+        #Perform every >=1 second
         #-------------------------------------------------
+            #Read GPS, update its value
         #-------------------------------------------------
 
         
