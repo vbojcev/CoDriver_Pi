@@ -57,6 +57,7 @@ class DataManager:
         self.writer = csv.writer(self.currentFile)
 
     def record(self):   #UNTESTED
+        self.updateTime(time.time())
         self.writer.writerow(self.content)
         self.numRows += 1
         if (self.numRows > 1000):   #Maximum file size reached
@@ -64,6 +65,7 @@ class DataManager:
             self.fileIndex += 1
             self.currentFile = open('data'+str(self.fileIndex)+'.csv', 'w', newLine='')
             self.writer = csv.writer(self.currentFile)
+            self.numRows = 0
 
     def updateTime(self, timeStamp):
         self.content[0] = timeStamp
