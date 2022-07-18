@@ -71,8 +71,8 @@ class DataManager:
         self.content[0] = timeStamp
 
     def updateLoc(self, loc):
-        self.content[1] = loc(0)
-        self.content[2] = loc(1)
+        self.content[1] = loc[0]
+        self.content[2] = loc[1]
 
     def updateSpeed(self, speed):
         self.content[4] = speed
@@ -152,6 +152,21 @@ class GPS_Manager:
 
     def __init__(self, i2cBus):
         self.hwInterface = GPS.GPS_GtopI2C(i2cBus)
+        #Basic Info:
+        self.hwInterface.send_command(b"PMTK314,0,1,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0")
+        #Update rate (1000ms is the minimum)
+        self.hwInterface.send_command(b"PMTK220,1000")
+        self.location = (181,181)
+
+    def update(self):
+        self.hwInterface.update()
+
+    def read(self):
+        if not self.hwInterface.has_fix():
+            self.location = (181,181)
+        else:
+            self.location = (self.hwInterface.latitude(), self.hwInterface.longitude())
+        return self.location
 
 #/////////////////////////////////////////////////////////
 
@@ -202,16 +217,20 @@ if __name__ == '__main__':
             #read ADC channels: HRS, TPS, BPS
             #read OBD channels: throttle (overrides TPS f both values reasonable), speed, fuel
             #record all data to CSV
+            data.updateAccel(imu.read())
+            data.updateSteer(sws.read())
         #-------------------------------------------------
 
-        #Perform every 500 milliseconds
+        #Perform every <500 milliseconds (this could be placed in the 10ms loop if it's not a big time burden)
         #-------------------------------------------------
             #Update GPS
+            gps.update()
         #-------------------------------------------------
 
         #Perform every >=1 second
         #-------------------------------------------------
             #Read GPS, update its value
+            data.updateLoc(gps.read())
         #-------------------------------------------------
 
         
