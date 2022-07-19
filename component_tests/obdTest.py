@@ -16,7 +16,7 @@
 import obd
 import time
 
-carPort = obd.OBD(fast=False, timeout=30)
+carPort = obd.OBD()
 
 #setup desired command names
 speedCMD = obd.commands.SPEED

@@ -75,7 +75,7 @@ class DataManager:
         self.content[2] = loc[1]
 
     def updateSpeed(self, speed):
-        self.content[4] = speed
+        self.content[3] = speed
 
     def updateFuel(self, fuel):
         self.content[4] = fuel
@@ -91,13 +91,12 @@ class DataManager:
         self.content[8] = accel[0]
         self.content[9] = accel[1]
 
-    def updateAccel(self, accel):
-        self.content[8] = accel[0]
-        self.content[9] = accel[1]
-
     def updatePitch(self, pitch):
-        self.content[8] = pitch[0]
-        self.content[9] = pitch[1]
+        self.content[10] = pitch[0]
+        self.content[11] = pitch[1]
+
+    def updateBPM(self, bpm):
+        self.content[12] = bpm
 
 
 class IMU_Manager:
@@ -121,8 +120,11 @@ class IMU_Manager:
         self.kalmanFilter_accel[2].append(accelRaw[2])
         self.accel = (stat.fmean(self.kalmanFilter_accel[0]),stat.fmean(self.kalmanFilter_accel[1]),stat.fmean(self.kalmanFilter_accel[2]),)
 
-    def read(self):
-        return self.accel + self.pitchRate
+    def readAccel(self):
+        return self.accel
+
+    def readPitch(self):
+        return self.pitchRate
 
 class SWS_Manager:
 
@@ -217,8 +219,11 @@ if __name__ == '__main__':
             #read ADC channels: HRS, TPS, BPS
             #read OBD channels: throttle (overrides TPS f both values reasonable), speed, fuel
             #record all data to CSV
-            data.updateAccel(imu.read())
+            data.updateAccel(imu.readAccel())
+            data.updatePitch(imu.readPitch())
             data.updateSteer(sws.read())
+            data.updatePedals((tps.value, bps.value))
+            data.updateBPM(hrs.value)
         #-------------------------------------------------
 
         #Perform every <500 milliseconds (this could be placed in the 10ms loop if it's not a big time burden)
