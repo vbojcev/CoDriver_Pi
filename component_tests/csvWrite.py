@@ -14,7 +14,7 @@ class DataManager:
         self.content=[0,0]
         self.numRows = 0
         self.fileIndex = 0
-        self.currentFile = open('./data/0.csv', 'w')
+        self.currentFile = open('./data/0.csv', 'w', newline='')
         self.writer = csv.writer(self.currentFile)
 
     def record(self):   #UNTESTED
@@ -25,7 +25,7 @@ class DataManager:
             self.currentFile.close()
             self.fileIndex += 1
             print('Creating new file... name: '+'data'+str(self.fileIndex)+'.csv')
-            self.currentFile = open('./data/'+str(self.fileIndex)+'.csv', 'w')
+            self.currentFile = open('./data/'+str(self.fileIndex)+'.csv', 'w', newline='')
             self.writer = csv.writer(self.currentFile)
             self.numRows = 0
 

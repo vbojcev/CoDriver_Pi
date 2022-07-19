@@ -63,9 +63,12 @@ class DataManager:
         if (self.numRows > 1000):   #Maximum file size reached
             self.currentFile.close()
             self.fileIndex += 1
-            self.currentFile = open('./data/'+str(self.fileIndex)+'.csv', 'w', newLine='')
+            self.currentFile = open('./data/'+str(self.fileIndex)+'.csv', 'w', newline='')
             self.writer = csv.writer(self.currentFile)
             self.numRows = 0
+
+    def cleanUp(self):
+        self.currentFile.close()
 
     def updateTime(self, timeStamp):
         self.content[0] = timeStamp
@@ -104,14 +107,19 @@ class IMU_Manager:
     def __init__(self, i2cBus):
         #init interface
         self.hwInterface = MPU.MPU6050(i2cBus, 0x69)
-        #Calibrated offsets for the IMU (x,y,z).
-        self.ADJ = (0.5029609161732991,0.22429359992675774,-1.592849395909651)
+        #Calibrated offsets for the IMU accel (x,y,z).
+        self.ADJ_a = (0.5029609161732991,0.22429359992675774,-1.592849395909651)
+        #Calibrated offsets for the IMU gyro (x,y,z).
+        self.ADJ_g = (0,0,0)
         self.kalmanFilter_accel = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
+        self.kalmanFilter_gyro = [deque([0,0,0,0,0]),deque([0,0,0,0,0]),deque([0,0,0,0,0])]
         self.accel = (0,0,0)
+        self.gyro = (0,0,0)
         self.pitchRate = (0,0,0)
 
     def update(self):
-        accelRaw = np.subtract(self.hwInterface.acceleration, self.ADJ)
+        accelRaw = np.subtract(self.hwInterface.acceleration, self.ADJ_a)
+        gyroRaw = np.subtract(self.hwInterface.gyro, self.ADJ_g)
         self.kalmanFilter_accel[0].popleft()
         self.kalmanFilter_accel[0].append(accelRaw[0])
         self.kalmanFilter_accel[1].popleft()
@@ -119,9 +127,19 @@ class IMU_Manager:
         self.kalmanFilter_accel[2].popleft()
         self.kalmanFilter_accel[2].append(accelRaw[2])
         self.accel = (stat.fmean(self.kalmanFilter_accel[0]),stat.fmean(self.kalmanFilter_accel[1]),stat.fmean(self.kalmanFilter_accel[2]),)
-
+        self.kalmanFilter_gyro[0].popleft()
+        self.kalmanFilter_gyro[0].append(gyroRaw[0])
+        self.kalmanFilter_gyro[1].popleft()
+        self.kalmanFilter_gyro[1].append(gyroRaw[1])
+        self.kalmanFilter_gyro[2].popleft()
+        self.kalmanFilter_gyro[2].append(gyroRaw[2])
+        self.accel = (stat.fmean(self.kalmanFilter_gyro[0]),stat.fmean(self.kalmanFilter_gyro[1]),stat.fmean(self.kalmanFilter_gyro[2]),)
+    
     def readAccel(self):
         return self.accel
+
+    def readGyro(self):
+        return self.gyro
 
     def readPitch(self):
         return self.pitchRate
